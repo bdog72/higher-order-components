@@ -5,9 +5,10 @@ import Redbox from 'redbox-react'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './reducers'
-
+import { Router, Route, browserHistory } from 'react-router'
+import requireAuth from './components/RequireAuthentication'
 import App from './components/App'
-
+import Resources from './components/Resources'
 import './styles/screen.scss'
 
 const createStoreWithMiddleware = applyMiddleware()(createStore)
@@ -23,7 +24,11 @@ const render = app => {
 
 render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
+    <Router history={browserHistory}>
+      <Route exact path='/' component={App}>
+        <Route path='/resources' component={requireAuth(Resources)} />
+      </Route>
+    </Router>
   </Provider>
 )
 
